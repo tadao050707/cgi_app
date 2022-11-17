@@ -9,30 +9,30 @@
     <% connection = PG::connect(dbname: "goya") %>
     <% connection.internal_encoding = "UTF-8" %>
 
-    <% result = connection.exec("select * from crops where give_for != '自家消費';") %>
-    <% data = []%>
+    <% results = connection.exec("select * from crops where give_for != '自家消費';") %>
+    <% not_home_data = []%>
 
-    <% result.each do |record| %>
-      <% data << "譲渡先:#{record["give_for"]} 品質:#{record["quality"]} 大きさ：#{record["lengrh"]} 重さ：#{record["weight"]} 日付：#{record["date"]}" %>
+    <% results.each do |record| %>
+      <% not_home_data << "譲渡先:#{record["give_for"]} 品質:#{record["quality"]} 大きさ：#{record["lengrh"]} 重さ：#{record["weight"]} 日付：#{record["date"]}" %>
     <% end %>
 
-    <% result_low = connection.exec("select * from crops where quality=false;") %>
-    <% data2 = []%>
+    <% result_low = connection.exec("select * from crops where quality = false;") %>
+    <% false_data = []%>
 
     <% result_low.each do |record| %>
-      <% data2 << "譲渡先:#{record["give_for"]} 品質:#{record["quality"]} 大きさ：#{record["lengrh"]} 重さ：#{record["weight"]} 日付：#{record["date"]}" %>
+      <% false_data << "譲渡先:#{record["give_for"]} 品質:#{record["quality"]} 大きさ：#{record["lengrh"]} 重さ：#{record["weight"]} 日付：#{record["date"]}" %>
     <% end %>
 
     <form action="goya1.cgi" method = "POST">
       下記のボタンを押すと、譲渡先が自家消費ではないものの情報に飛びます<br><br>
-      <input type ="text" name="goya1" value="<%= data.join(' ')%>">
+      <input type ="text" name="not_home_data" value="<%= not_home_data.join(' ')%>">
       <input type ="submit" name ="送信">
     </form>
 
 
     <form action="goya2.cgi" method = "POST">
       下記のボタンを押すと、品質が悪いもののgoyaの情報を載せたページに飛びます<br><br>
-      <input type="text" name="goya2" value="<%= data2.join(' ')%>">
+      <input type="text" name="false_data" value="<%= false_data.join(' ')%>">
       <input type="submit" name="送信">
     </form>
   </body>

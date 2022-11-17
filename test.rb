@@ -9,9 +9,9 @@ server = WEBrick::HTTPServer.new({
   Signal.trap(signal){ server.shutdown }
 }
 server.mount('/', WEBrick::HTTPServlet::ERBHandler, 'exam.html.erb')
+server.mount('/goya1.cgi', WEBrick::HTTPServlet::CGIHandler, 'not_home_data.rb')
+server.mount('/goya2.cgi', WEBrick::HTTPServlet::CGIHandler, 'false_data.rb')
+
 server.mount('/test', WEBrick::HTTPServlet::ERBHandler, 'test.html.erb')
 server.mount('/indicate.cgi', WEBrick::HTTPServlet::CGIHandler, 'indicate.rb')
-server.mount('/goya.cgi', WEBrick::HTTPServlet::CGIHandler, 'goya.rb')
-server.mount('/goya1.cgi', WEBrick::HTTPServlet::CGIHandler, 'goya1.rb')
-server.mount('/goya2.cgi', WEBrick::HTTPServlet::CGIHandler, 'goya2.rb')
 server.start
